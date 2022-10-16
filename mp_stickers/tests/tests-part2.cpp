@@ -288,6 +288,8 @@ TEST_CASE("A Stickersheet with stickers placed beyond base image boundaries work
     sheet = sheetDuplicate;
   }
 
+  REQUIRE( sheet.render() == alma );
+
   sheet.addSticker(i, 800, 200);
   sheet.addSticker(i, 50, 500);
 
