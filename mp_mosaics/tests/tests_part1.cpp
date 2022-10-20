@@ -187,7 +187,6 @@ TEST_CASE("KDTree::findNearestNeighbor (2D), returns correct result", "[weight=1
   std::string fname = "test_result_kdtree_"+to_string(K)+"_"+to_string(size)+".kd";
   writeKdTreeToFile(tree,fname);
   compareBinaryFiles(fname, "../tests/expected_kdtree_"+to_string(K)+"_"+to_string(size)+".kd" );
-
   REQUIRE( tree.findNearestNeighbor(target) == expected );
 }
 
