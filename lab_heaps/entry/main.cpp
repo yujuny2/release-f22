@@ -68,6 +68,10 @@ int main(int argc, const char** argv)
     testPop(count);
     testUpdateElem(count);
 
+    vector<int> vals = {3, 2, 1};
+	heap<int> myHeap(vals);
+    cout << myHeap;
+
     return 0;
 }
 
