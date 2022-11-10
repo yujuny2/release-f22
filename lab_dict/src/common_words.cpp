@@ -47,13 +47,33 @@ void CommonWords::init_file_word_maps(const vector<string>& filenames)
         // get the corresponding vector of words that represents the current
         // file
         vector<string> words = file_to_vector(filenames[i]);
+        std::map<std::string, unsigned int> map;
         /* Your code goes here! */
+        for (unsigned j = 0; j < words.size(); j++) {
+            std::map<std::string, unsigned int>::iterator lookup = map.find(words[j]);
+            if (lookup != map.end()) {
+                map[words[j]]++;
+            } else {
+                map[words[j]] = 1;
+            }
+        }
+        file_word_maps.push_back(map);
     }
 }
 
 void CommonWords::init_common()
 {
     /* Your code goes here! */
+    for (unsigned i = 0; i < file_word_maps.size(); i++) {
+        for (std::pair<std::string, unsigned int> key_val : file_word_maps[i]) {
+            std::map<std::string, unsigned int>::iterator lookup = common.find(key_val.first);
+            if (lookup != common.end()) {
+                common[key_val.first]++;
+            } else {
+                common[key_val.first] = 1;
+            }
+        }
+    }
 }
 
 /**
@@ -65,6 +85,27 @@ vector<string> CommonWords::get_common_words(unsigned int n) const
 {
     vector<string> out;
     /* Your code goes here! */
+    std::map<std::string , unsigned int> freq;
+
+    for (unsigned i = 0; i < file_word_maps.size(); i++) {
+        std::map<std::string, unsigned int> map = file_word_maps[i];
+        for (std::pair<std::string, unsigned int> key_val : map) {
+            if (map[key_val.first] >= n) {
+                std::map<std::string, unsigned int>::iterator lookup = freq.find(key_val.first);
+                if (lookup != freq.end()) {
+                    freq[key_val.first]++;
+                } else {
+                    freq[key_val.first] = 1;
+                }
+            }
+        }
+    }
+
+    for (std::pair<std::string, unsigned int> key_val : common) {
+        if (key_val.second == freq[key_val.first]) {
+            out.push_back(key_val.first);
+        }
+    } 
     return out;
 }
 

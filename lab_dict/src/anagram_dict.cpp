@@ -23,6 +23,24 @@ using std::ifstream;
 AnagramDict::AnagramDict(const string& filename)
 {
     /* Your code goes here! */
+    ifstream wordsFile(filename);
+    std::vector<std::string> words;
+    string word;
+    if (wordsFile.is_open()) {
+        /* Reads a line from `wordsFile` into `word` until the file ends. */
+        while (getline(wordsFile, word)) {
+            words.push_back(word);
+        }
+    }
+
+    for (unsigned i = 0; i < words.size(); i++) {
+        std::vector<std::string> anagrams;
+        for (unsigned j = 0; j < words.size(); j++) {
+            if (i == j) continue;
+            if (isAnagram(words[i], words[j])) anagrams.push_back(words[j]);
+        }
+        dict[words[i]] = anagrams;
+    }
 }
 
 /**
@@ -32,6 +50,15 @@ AnagramDict::AnagramDict(const string& filename)
 AnagramDict::AnagramDict(const vector<string>& words)
 {
     /* Your code goes here! */
+    for (unsigned i = 0; i < words.size(); i++) {
+        std::vector<std::string> anagrams;
+        anagrams.push_back(words[i]);
+        for (unsigned j = 0; j < words.size(); j++) {
+            if (i == j) continue;
+            if (isAnagram(words[i], words[j])) anagrams.push_back(words[j]);
+        }
+        if (anagrams.size() != 1) dict[words[i]] = anagrams;
+    }
 }
 
 /**
@@ -43,6 +70,9 @@ AnagramDict::AnagramDict(const vector<string>& words)
 vector<string> AnagramDict::get_anagrams(const string& word) const
 {
     /* Your code goes here! */
+    for (std::pair<std::string, std::vector<std::string>> key_val : dict) {
+        if (key_val.first == word) return key_val.second;
+    }
     return vector<string>();
 }
 
@@ -55,5 +85,17 @@ vector<string> AnagramDict::get_anagrams(const string& word) const
 vector<vector<string>> AnagramDict::get_all_anagrams() const
 {
     /* Your code goes here! */
-    return vector<vector<string>>();
+    std::vector<std::vector<std::string>> ret;
+    for (std::pair<std::string, std::vector<std::string>> key_val : dict) {
+        ret.push_back(key_val.second);
+    }
+    return ret;
+}
+
+bool AnagramDict::isAnagram(std::string word1, std::string word2) {
+    if (word1.size() != word2.size()) return false;
+
+    std::sort(word1.begin(), word1.end());
+    std::sort(word2.begin(), word2.end());
+    return word1 == word2;
 }

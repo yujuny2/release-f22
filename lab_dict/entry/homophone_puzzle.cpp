@@ -40,8 +40,9 @@ int main(int argc, char* argv[])
     }
 
     PronounceDict d(pronounce_dict_filename);
-
+    std::cout << "here" << std::endl;
     vector<std::tuple<std::string, std::string, std::string>> result1 = cartalk_puzzle(d, word_list_filename);
+    std::cout << "here" << std::endl;
 
     /* Here comes some awful string formatting. */
     size_t max_str_padding = 0;
