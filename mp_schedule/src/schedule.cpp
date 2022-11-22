@@ -136,28 +136,6 @@ V2D schedule(const V2D &courses, const std::vector<std::string> &timeslots){
         }
     }
 
-    // print courses
-    for (unsigned i = 0; i < num_courses; i++) {
-        for (unsigned j = 0; j < courses[i].size(); j++) {
-            std::cout << courses[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-
-    // print timeslots
-    for (unsigned i = 0; i < timeslots.size(); i++) {
-        std::cout << timeslots[i] << " ";
-    }
-    std::cout << std::endl;
-
-    // print adjacency matrix
-    for (unsigned i = 0; i < num_courses; i++) {
-        for (unsigned j = 0; j < num_courses; j++) {
-            std::cout << edges[i][j] << " ";
-        }
-        std::cout << std::endl;
-    } 
-
     // get course names
     std::vector<std::string> course_names;
     for (unsigned i = 0; i < num_courses; i++) {
@@ -165,20 +143,14 @@ V2D schedule(const V2D &courses, const std::vector<std::string> &timeslots){
     }
 
     // graph coloring
-    bool done = true;
     for (unsigned i = 0; i < num_courses; i++) { // loop through each starting vertex
         std::unordered_map<int, std::vector<std::string>> map;
         map[0] = {timeslots[0], course_names[0]};
         std::vector<int> colors = {0};
+        bool done = true;
 
         for (unsigned j = 1; j < num_courses; j++) { // loop through vertices
             int color = 0;
-
-            // print coloring
-            for (unsigned i = 0; i < colors.size(); i++) {
-                std::cout << colors[i] << " ";
-            }
-            std::cout << std::endl;
 
             std::vector<bool> available(map.size(), true);
             for (unsigned k = 0; k < j; k++) {
@@ -209,13 +181,6 @@ V2D schedule(const V2D &courses, const std::vector<std::string> &timeslots){
             }
             colors.push_back(color);
         }
-        
-        // print coloring
-            for (unsigned i = 0; i < colors.size(); i++) {
-                std::cout << colors[i] << " ";
-            }
-            std::cout << std::endl;
-
 
         // terminate if there is valid labeling
         if (map.size() <= timeslots.size() && done) {
