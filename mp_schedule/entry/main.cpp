@@ -7,7 +7,7 @@ int main() {
     //Graph myGraph("rosterList.txt", "studentList.txt");
 
     //V2D roster = file_to_V2D("../rosterList.txt");
-    V2D roster = file_to_V2D("../tests/data/c5_s10_3_roster_errors.csv");
+    V2D roster = file_to_V2D("../tests/data/c200_s500_20_roster.csv");
 
     /*
     for (int i = 0; i < (int) roster.size(); ++i){
@@ -20,7 +20,7 @@ int main() {
     */
 
     //V2D student = file_to_V2D("../studentList.txt");
-    V2D student = file_to_V2D("../tests/data/c5_s10_3_students_errors.csv");
+    V2D student = file_to_V2D("../tests/data/c200_s500_20_students.csv");
 
     /*
     for (int i = 0; i < (int) student.size(); ++i){

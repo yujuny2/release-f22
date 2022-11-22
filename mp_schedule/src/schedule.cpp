@@ -134,6 +134,28 @@ V2D schedule(const V2D &courses, const std::vector<std::string> &timeslots){
                 }
             }
         }
+    }
+
+    // print courses
+    for (unsigned i = 0; i < num_courses; i++) {
+        for (unsigned j = 0; j < courses[i].size(); j++) {
+            std::cout << courses[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    // print timeslots
+    for (unsigned i = 0; i < timeslots.size(); i++) {
+        std::cout << timeslots[i] << " ";
+    }
+    std::cout << std::endl;
+
+    // print adjacency matrix
+    for (unsigned i = 0; i < num_courses; i++) {
+        for (unsigned j = 0; j < num_courses; j++) {
+            std::cout << edges[i][j] << " ";
+        }
+        std::cout << std::endl;
     } 
 
     // get course names
@@ -151,29 +173,26 @@ V2D schedule(const V2D &courses, const std::vector<std::string> &timeslots){
 
         for (unsigned j = 1; j < num_courses; j++) { // loop through vertices
             int color = 0;
-            std::vector<bool> available(map.size(), false);
-            std::vector<bool> unavailable(map.size(), false);
 
-            for (unsigned k = 0; k < j; k++) { // loop through visited vertices
-                if (!edges[j][k]) {
-                    if (!unavailable[colors[k]]) {
-                        available[colors[k]] = true;
-                    }
-                } else {
-                    // check if the color of this edge exists in the available color vector, if exists, remove the color
-                    unavailable[colors[k]] = true;
-                    if (available[colors[k]]) {
-                        available[colors[k]] = false;
-                    }
+            // print coloring
+            for (unsigned i = 0; i < colors.size(); i++) {
+                std::cout << colors[i] << " ";
+            }
+            std::cout << std::endl;
+
+            std::vector<bool> available(map.size(), true);
+            for (unsigned k = 0; k < j; k++) {
+                if (edges[j][k]) {
+                    available[colors[k]] = false;
                 }
             }
 
             for (unsigned k = 0; k < available.size(); k++) {
                 if (available[k]) {
-                    color = colors[k];
+                    color = k;
                     break;
                 }
-                color = k + 1;
+                color = map.size();
             }
 
             // if the number of colors is greater than the number of timeslots, go to the next option
@@ -190,15 +209,26 @@ V2D schedule(const V2D &courses, const std::vector<std::string> &timeslots){
             }
             colors.push_back(color);
         }
+        
+        // print coloring
+            for (unsigned i = 0; i < colors.size(); i++) {
+                std::cout << colors[i] << " ";
+            }
+            std::cout << std::endl;
 
 
         // terminate if there is valid labeling
-        if (map.size() == timeslots.size() && done) {
+        if (map.size() <= timeslots.size() && done) {
             for (std::pair<int, std::vector<std::string>> key_val : map) {
                 new_schedule.push_back(key_val.second);
             }
+
+            for (unsigned k = map.size(); k < timeslots.size(); k++) {
+                std::vector<std::string> t = {timeslots[k]};
+                new_schedule.push_back(t);
+            }
             return new_schedule;
-        }
+        } 
 
         // start from the second vertex if the current vertex fails; move the first vertex to the last
         std::rotate(course_names.begin(), course_names.begin() + 1, course_names.end());
