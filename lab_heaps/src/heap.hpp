@@ -132,10 +132,8 @@ void heap<T, Compare>::updateElem(const size_t & idx, const T& elem)
     // @TODO In-place updates the value stored in the heap array at idx
     // Corrects the heap to remain as a valid heap even after update
     _elems[idx] = elem;
-    if (idx == root())
-        heapifyDown(idx);
-    if (!hasAChild(idx))
-        heapifyUp(idx);
+    heapifyDown(idx);
+    heapifyUp(idx);
 }
 
 
